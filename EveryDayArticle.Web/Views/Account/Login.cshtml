@@ -1,0 +1,61 @@
+﻿@model EveryDayArticle.Web.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+@{
+    // EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="row">
+    <div class="container">
+        <div class="col-md-8">
+            <br />
+            @Html.ValidationSummary()
+            <br />
+            <h1>Giriş</h1>
+            <hr />
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post)) {
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">E-Posta</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Şifre</label>
+                    <div class="col-md-10">
+                        @Html.PasswordFor(Model => Model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Beni Hatırla</label>
+                    <div class="col-md-10">
+                        <input style="width:20px; height:20px;" type="checkbox" name="RememberMe" value="true" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10 offset-md-2">
+                        <button type="submit" value="save" name="btn" class="btn btn-primary">
+                            Giriş Yap
+                        </button>     
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10" style="padding-left:136px;">
+                        <a style="color:red; text-decoration:none;" href="/reset">
+                            Şifremi unuttum
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>      
+    </div>
+</div>

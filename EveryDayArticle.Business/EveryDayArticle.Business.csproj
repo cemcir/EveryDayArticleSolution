@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EveryDayArticle.DataAccess\EveryDayArticle.DataAccess.csproj" />
+    <ProjectReference Include="..\EveryDayArticle.Entities\EveryDayArticle.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

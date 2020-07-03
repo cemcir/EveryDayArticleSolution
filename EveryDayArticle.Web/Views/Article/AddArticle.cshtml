@@ -1,0 +1,73 @@
+﻿@model EveryDayArticle.Web.Models.ArticleModel
+@{
+    ViewData["Title"] = "AddArticle";
+}
+
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<br />
+<body style="background-color:#F0F0F0;">
+<div class="row">
+    <div class="container">
+        <div class="col-md-9">
+            <h1>Makale Ekle</h1>
+            <hr />
+            @if (message.Content != null || message.Messages.Count > 0) {
+                <partial name="_Message" for="@message" />
+            }            
+            @if (Model.Categories != null) {
+                @using (Html.BeginForm("AddArticle", "Article", FormMethod.Post)) {
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Başlık</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Title)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Metin</label>
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.Text, new { @class = "form-control",rows="20" })
+                            @Html.ValidationMessageFor(model => model.Text)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Kategori</label>
+                        <div class="col-md-10">
+                            <select class="form-control" name="CategoryId">
+                                <option value="0">Kategori Seçiniz</option>
+                                @foreach (var item in Model.Categories) {
+                                    @if (Model.CategoryId == item.Id) {
+                                        <option value="@(item.Id)" selected>
+                                            @item.Name
+                                        </option>
+                                    }
+                                    else {
+                                    <option value="@(item.Id)">
+                                        @item.Name
+                                    </option>
+                                    }
+                                }
+                            </select>
+                        @Html.ValidationMessageFor(model => model.Categories)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-10 offset-md-2">
+                            <button type="submit" value="Save Product" class="btn btn-primary">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                }
+            }               
+            </div>
+    </div>
+</div>
+</body>

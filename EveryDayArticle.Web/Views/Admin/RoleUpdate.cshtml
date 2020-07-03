@@ -1,0 +1,43 @@
+﻿@model EveryDayArticle.Web.Models.RoleModel
+
+@{
+    ViewData["Title"] = "RoleUpdate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<div class="row">
+    <div class="container">
+        <div class="col-md-8">
+            @Html.ValidationSummary()
+            <br />
+            <h1>Rol Güncelleme</h1>
+            <hr />
+            @using (Html.BeginForm("RoleUpdate", "Admin", FormMethod.Post)) {
+                <input type="hidden" name="Id" value="@(Model.Id)" />
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">Rol İsmi</label>
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10 offset-md-2">
+                        <button type="submit" value="save" name="btn" class="btn btn-primary">
+                            Güncelle
+                        </button>
+                    </div>
+                </div>             
+            }
+        </div>
+    </div>
+</div>
+
+
+
+

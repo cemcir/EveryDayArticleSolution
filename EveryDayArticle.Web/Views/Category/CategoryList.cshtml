@@ -1,0 +1,53 @@
+﻿@model EveryDayArticle.Web.Models.CategoryListModel
+
+@{
+    ViewData["Title"] = "CategoryList";
+}
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+<body style="background-color:#F0F0F0">
+<div class="container">
+    <div class="col-md-12">
+        <br />
+        <h2>Kategori Listesi</h2>
+
+        @if (message.Content != null) {
+            <partial name="_Message" for="@message" />
+        }
+        else {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td style="width:30px;">Id</td>
+                        <td style="width:100px;">Name</td>
+                        <td style="width:150px;"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Categories) {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <form action="/category/edit" method="post" style="display:inline">
+                                    <input type="hidden" name="Id" value="@(item.Id)" />
+                                    <button type="submit" value="edit" name="btn" class="btn btn-primary btn-sm mr-2">
+                                        Güncelle
+                                    </button>
+                                </form>
+                                <form action="/category/delete" method="post" style="display:inline">
+                                    <input type="hidden" name="Id" value="@(item.Id)" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Sil
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+</body>

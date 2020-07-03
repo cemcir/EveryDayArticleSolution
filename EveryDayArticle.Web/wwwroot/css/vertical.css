@@ -1,0 +1,51 @@
+﻿.d-menu {
+    background: #333;
+    margin-left: -15px;
+    margin-top: -48px;
+    width: 250px;
+}
+
+.d-menu ul li {
+    list-style: none;
+}
+
+.d-menu ul {
+    margin: 0;
+    padding: 0;
+}
+
+.d-menu ul li form button {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    display: block;
+    border-bottom: 1px solid #282828;
+}
+
+.d-menu ul li ul {
+    display: none;
+}
+
+.d-menu ul li:hover ul {
+    display: block;
+    position: absolute;
+    margin: -40px 0 0 250px;
+}
+
+.d-menu ul li ul li button {
+    padding: 10px;
+    font-size: 15px;
+    background-color: #282828;
+    border-bottom: 1px solid #222;
+    transition: all .3s ease-in-out;
+    width: 400px;
+    margin-top: -5px;
+}
+
+.d-menu ul li form button:hover {
+    background-color: #00ffff;
+    transition: all .3s ease-in-out;
+    width:250px;
+    text-align:left;
+    text-decoration:none;
+}

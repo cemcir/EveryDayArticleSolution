@@ -1,0 +1,43 @@
+﻿@model EveryDayArticle.Web.Models.CategoryModel
+@{
+    ViewData["Title"] = "AddCategory";
+}
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<br />
+<body style="background-color:#F0F0F0;">
+    <div class="row">
+        <div class="container">
+            <div class="col-md-8">
+                <h1>Kategori Ekle</h1>
+                <hr />
+                @if (message.Content != null || message.Messages.Count>0) {
+                    <partial name="_Message" for="@message" />
+                }
+                @using (Html.BeginForm("AddCategory", "Category", FormMethod.Post)) {
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Kategori</label>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-10 offset-md-2">
+                            <button type="submit" value="Save Product" class="btn btn-primary">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                }
+        </div>
+    </div>
+</div>
+</body>
+

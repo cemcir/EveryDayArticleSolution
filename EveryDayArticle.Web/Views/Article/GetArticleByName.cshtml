@@ -1,0 +1,73 @@
+﻿@model EveryDayArticle.Web.Models.ArticleListModel
+
+@{
+    Layout = null;
+}
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetArticleByName</title>
+    <link rel="stylesheet" href="~/css/article.css" />
+    <link rel="stylesheet" href="~/css/vertical.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <script src="~/js/article.js"></script>
+</head>
+<body style="background-color:#F0F0F0;">
+    <partial name="_Navbar"/>
+    <br/>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <br/>
+                @await Component.InvokeAsync("CategoryList")
+            </div>
+            <div class="col-md-9">
+            <br />
+            <h2>Kategoriye Ait Makale Bilgileri</h2>
+
+            @if (message.Content != null) {
+                <partial name="_Message" for="@message" />
+            }
+            else {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td style="width:50px;">Başlık</td>
+                            <td style="width:50px;">Kategori</td>
+                            <td style="width:50px;">Yayınlama Tarihi</td>
+                            <td style="width:50px;"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Articles) {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.Category.Name</td>
+                                <td>@item.PublishDate.ToString("d")</td>
+                                <td>
+                                    <form action="/get/article" method="post" style="display:inline">
+                                        <input type="hidden" name="Id" value="@(item.Id)" />
+                                        <button type="submit" value="edit" name="btn" class="btn btn-primary btn-sm mr-2">
+                                            Makaleyi Oku
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        </div>
+    </div>
+</body>
+</html>

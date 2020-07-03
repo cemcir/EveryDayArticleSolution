@@ -1,0 +1,40 @@
+﻿@model EveryDayArticle.Web.Models.CategoryModel
+
+@{
+    ViewData["Title"] = "EditCategory";
+}
+
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+
+<body style="background-color:#F0F0F0;">
+    <div class="row">
+        <div class="container">
+            <div class="col-md-8">
+                <h1>Kategori Düzenle</h1>
+                <hr />
+                @if (message.Content != null || message.Messages.Count > 0) {
+                    <partial name="_Message" for="@message" />
+                }
+                @using (Html.BeginForm("EditCategory", "Category", FormMethod.Post)) {
+                    <div class="form-group row">
+                        <label class="col-md-2 col-form-label">Kategori</label>
+                        <div class="col-md-10">
+                            <input type="hidden" name="Id" value="@Model.Id" />
+                            @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(Model => Model.Name)
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-10 offset-md-2">
+                            <button type="submit" value="save" name="btn" class="btn btn-primary">
+                            Kaydet
+                        </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>

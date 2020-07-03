@@ -1,0 +1,18 @@
+﻿@model EveryDayArticle.Web.Models.ArticleModel
+
+<div class="row">
+    <div class="col-md-12">
+        @if (Model.Comments.Count > 0 && Model.Comments != null) {
+            @foreach (var item in Model.Comments) {
+                <div id="commentMessage">                  
+                    <span>
+                        <i style="padding-left:10px;">Enes Cemcir</i>
+                        <br/>
+                        <strong style="padding-left:10px;">@item.Content</strong>
+                    </span>
+                </div>
+                <br/>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿<nav class="navbar navbar-expand-md  bg-primary navbar-dark">
+    @if (User.Identity.IsAuthenticated == false) {
+        <a class="navbar-brand" href="#">Her Gün Bir Makale</a>
+    }
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Anasayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">Hakkımda</a>
+                </li>
+             @if (User.Identity.IsAuthenticated) { 
+                <li class="nav-item">
+                    <a class="nav-link" href="/article">Günün Makalesi</a>
+                </li>
+                @if (User.IsInRole("admin")) {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/category/add">Kategori Ekle</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/categories">Kategoriler</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/article/add">Makale Ekle</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/article/list">Makaleler</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a href="/account/edit" class="nav-link">Bilgileri Güncelle</a>
+                </li>
+                <li>
+                    <a href="/change" class="nav-link">Şifre Değiştir</a>
+                </li>
+                @if (User.IsInRole("admin")) {
+                    <li>
+                        <a class="nav-link" href="/users">Üyeler</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="/roles">Roller</a>
+                    </li>
+                }
+             }
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            @if (User.Identity.IsAuthenticated) {
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        @User.Identity.Name
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form action="/logout" method="post">
+                        <button style="text-decoration:none;" type="submit" class="btn btn-link nav-link">
+                            Çıkış Yap
+                        </button>
+                    </form>                  
+                </li>
+            }
+            else {
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Giriş</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account">Üye Ol</a>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

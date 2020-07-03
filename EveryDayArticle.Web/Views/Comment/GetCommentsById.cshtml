@@ -1,0 +1,111 @@
+﻿@model EveryDayArticle.Web.Models.ArticleModel
+
+@{
+    Layout = null;
+}
+
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+
+    EveryDayArticle.Business.Concreate.Message commentMessage = (EveryDayArticle.Business.Concreate.Message)ViewData["CommentMessage"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetCommentsById</title>
+    <link rel="stylesheet" href="~/css/article.css" />
+    <link rel="stylesheet" href="~/css/vertical.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <script src="~/js/article.js"></script>
+</head>
+<body style="background-color:#F0F0F0;">
+    <partial name="_Navbar" />
+    <br /><br />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                @await Component.InvokeAsync("CategoryList")
+            </div>
+            <div class="col-md-8 offset-md-1">
+                <h1>Günün Makalesi</h1>
+                @if (message.Content != null || message.Messages.Count > 0) {
+                    <partial name="_Message" for="@message" />
+                }
+                else {
+                    <div id="border" class="border border-dark">
+                        <p>
+                            <h2 style="color:red; text-align:center;">
+                                <em>@Model.Title</em>
+                            </h2>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Model.Text
+                        </p>
+                        <br /><br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if (Model.Liked.LikedCount != 0) {
+                                    <i style="color:blue" class="far fa-thumbs-up"></i>@Model.Liked.LikedCount
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                @if (Model.Comment.CommentCount > 0) {
+                                    @using (Html.BeginForm("GetCommentsById", "Comment", FormMethod.Post)) {
+                                        <input type="hidden" name="Id" value="@Model.Id" />
+                                        <button id="btnComment" type="submit" class="btn btn-link">
+                                            @Model.Comment.CommentCount Yorum
+                                        </button>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form action="/liked/add" method="post">
+                                    <input type="hidden" name="ArticleId" value="@(Model.Id)"/>
+                                    <button id="btn" type="submit" class="btn btn-link">
+                                        <i class="far fa-thumbs-up"></i> &nbsp;&nbsp; Beğen
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btn" onclick="moveCursorTextBox()" class="btn btn-link">
+                                    <i class="far fa-comment-alt"></i>&nbsp;&nbsp; Yorum Yap
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                        <br />
+                        <div id="comments" class="row">
+                            <div class="col-md-6">
+                                <partial name="_Comments" for="@Model" />
+                            </div>
+                        </div>
+                        <div id="comment" class="row">
+                            <div style="margin-left:25px; margin-top:-6px;" class="col-md-1">
+                                <img src="~/images/enes.jpg" alt="Avatar" style="width:50px; height:50px;">
+                            </div>
+                            <div style="margin-left:-25px;" class="col-md-10">
+                                <form method="post" action="/comment/add" class="form-inline">
+                                    <input type="hidden" name="Id" value="@Model.Id" />
+                                    @Html.TextBoxFor(model => model.Comment.Content, new { style = "width:500px;",id="commentbox", placeholder = "Yorum Yapınız", @class = "form-control mb-2 mr-sm-2" })
+                                    @Html.ValidationMessageFor(model => model.Comment.Content)
+                                    <button type="submit" class="btn btn-primary mb-2">
+                                        Gönder
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

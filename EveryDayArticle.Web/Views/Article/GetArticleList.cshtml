@@ -1,0 +1,59 @@
+﻿@model EveryDayArticle.Web.Models.ArticleListModel
+@{
+    ViewData["Title"] = "GetArticleList";
+}
+
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+<body style="background-color:#F0F0F0;">
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <h1>Makale Listesi</h1>
+
+        @if (message.Content != null || message.Messages.Count>0) {
+            <partial name="_Message" for="@message" />
+        }
+        else {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td style="width:50px;">Başlık</td>
+                        <td style="width:50px;">Kaydediliş Tarihi</td>
+                        <td style="width:50px;">Kaydediliş Saati</td>
+                        <td style="width:50px;">Yayınlama Tarihi</td>
+                        <td style="width:50px;">Kategori</td>
+                        <td style="width:120px;"></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Articles) {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.CreatedDate.ToString("d")</td>
+                            <td>@item.CreatedDate.ToString("T")</td>
+                            <td>@item.PublishDate.ToString("d")</td>
+                            <td>@item.Category.Name</td>
+                            <td>
+                                <form action="/article/edit" method="post" style="display:inline">
+                                    <input type="hidden" name="Id" value="@(item.Id)" />
+                                    <button type="submit" value="edit" name="btn" class="btn btn-primary btn-sm mr-2">
+                                        Güncelle
+                                    </button>
+                                </form>
+                                <form action="/article/delete" method="post" style="display:inline">
+                                    <input type="hidden" name="Id" value="@(item.Id)" />
+                                    <button type="submit" class="btn btn-danger btn-sm">         
+                                        Sil
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+</body>

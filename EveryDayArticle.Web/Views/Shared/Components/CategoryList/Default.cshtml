@@ -1,0 +1,14 @@
+﻿@model CategoryListViewModel
+
+<div class="d-menu">
+    <ul>
+    @foreach (var category in Model.Categories) {
+        <li>
+            <form action="/articles" method="post">
+                <input type="hidden" name="Name" value="@(category.Name)"/>
+                <button class="btn btn-link">@category.Name</button>
+            </form>
+        </li>
+    }
+    </ul>
+</div>
