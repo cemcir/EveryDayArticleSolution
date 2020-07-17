@@ -46,7 +46,7 @@
             <div class="form-group row">
                 <label class="col-md-2 col-form-label">Doğum Tarihi</label>
                 <div class="col-md-10">
-                    <input class="form-control" type="datetime" name="BirthDay" value=@(Model.BirthDay?.ToShortDateString()) />
+                    @Html.EditorFor(model => model.BirthDay, new { @type = "date", @Value = Model.BirthDay?.ToString(), @class = "form-control" })
                 </div>
             </div>
             <div class="form-group row">

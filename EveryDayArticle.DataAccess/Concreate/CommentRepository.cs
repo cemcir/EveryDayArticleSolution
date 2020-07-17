@@ -22,5 +22,10 @@ namespace EveryDayArticle.DataAccess.Concreate
         public List<Comment> GetCommentsById(int Id) {
             return _appDbContext.Comments.Where(comment => comment.ArticleId == Id).ToList();
         }
+
+        public List<Comment> GetCommentsByUserId(string userId,int Id)
+        {
+            return _appDbContext.Comments.Where(comment => comment.UserId == userId && comment.ArticleId==Id).ToList();
+        }
     }
 }

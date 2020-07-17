@@ -8,5 +8,7 @@ namespace EveryDayArticle.Web.Models
     public class IsCommentActive
     {
         public static bool IsActive = false;
+
+        public static bool IsCommentButtonActive = false;
     }
 }

@@ -12,6 +12,7 @@ namespace EveryDayArticle.Web.Models
         [Required(ErrorMessage ="Kullanıcı adı gereklidir")]
         public string UserName { get; set; }
 
+        [RegularExpression(@"^(0(\d{3}) (\d{3}) (\d{2}) (\d{2}))$",ErrorMessage ="Telefon numaranız uygun formatta değil")]
         [Required(ErrorMessage ="Telefon bilgisi gereklidir")]
         public string PhoneNumber { get; set; }
 

@@ -10,6 +10,8 @@ namespace EveryDayArticle.Business.Abstract
     {
         int GetCommentCountById(int id);
 
-        BaseResponse<List<Comment>> GetCommentsById(int Id); 
+        BaseResponse<List<Comment>> GetCommentsById(int Id);
+
+        BaseResponse<List<Comment>> GetCommentsByUserId(string userId,int Id);
     }
 }

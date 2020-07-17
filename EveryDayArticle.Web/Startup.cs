@@ -293,7 +293,13 @@ namespace EveryDayArticle.Web
                 routes.MapRoute(
                     name:"RoleDelete",
                     template:"role/delete",
-                    defaults:new {Controller="Admin",Action="RoleDelete"}
+                    defaults:new { Controller="Admin",Action="RoleDelete" }
+                );
+
+                routes.MapRoute(
+                    name:"Profile",
+                    template:"profile",
+                    defaults:new { Controller="Account",Action="Profile" }
                 );
 
                 routes.MapRoute(

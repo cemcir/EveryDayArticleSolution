@@ -15,30 +15,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace EveryDayArticle.Web.Controllers
 {
     [Authorize]
-    public class ArticleController : Controller
+    public class ArticleController : BaseController
     {
-        private readonly Message _message;
-        private readonly ICategoryService _categoryService;
-        private readonly IArticleService _articleService;
-        private readonly ICommentService _commentService;
-        private readonly ILikedService _likedService;
-        private UserManager<AppUser> _userManager { get; }
-        private SignInManager<AppUser> _signInManager { get; }
-
-        public ArticleController(Message message,ICategoryService categoryService,IArticleService articleService, ICommentService commentService,ILikedService likedService,UserManager<AppUser> userManager,SignInManager<AppUser> signInManager) {
-            _message = message;
-            _categoryService = categoryService;
-            _articleService = articleService;
-            _commentService = commentService;
-            _likedService = likedService;
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        public ArticleController(Message message, IArticleService articleService, ICategoryService categoryService, ICommentService commentService, ILikedService likedService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager = null) : base(message, articleService, categoryService, commentService, likedService, userManager, signInManager) { }
 
         [HttpGet]
         [Authorize]
         public IActionResult GetArticles()
         {
+            /*
             var response = _articleService.GetArticleOfDay();
             var article = new ArticleModel();
             article.Comment = new CommentModel();
@@ -72,6 +57,8 @@ namespace EveryDayArticle.Web.Controllers
             
             ViewData["Message"] = _message;
             //ViewData["Test"] = "false";
+            */
+            var article=GetArticleOfDay();
             return View(article);
         }
 
@@ -301,6 +288,11 @@ namespace EveryDayArticle.Web.Controllers
 
         [HttpPost]
         public IActionResult GetArticleById(ArticleModel model) {
+            IsCommentActive.IsActive = false;
+            IsCommentActive.IsCommentButtonActive = false;
+            var article = new ArticleModel();
+            article = GetArticleById(model.Id);
+            /*
             var response = _articleService.GetById(model.Id);
             var article = new ArticleModel();
             article.Comment = new CommentModel();
@@ -337,7 +329,7 @@ namespace EveryDayArticle.Web.Controllers
             ViewData["Message"] = _message;
             //ViewData["Test"] = "false";
             return View(article);
-
+            */
             /*
             var response = _articleService.GetById(model.Id);
             var article = new ArticleModel();
@@ -349,8 +341,9 @@ namespace EveryDayArticle.Web.Controllers
                 _message.Css = "danger";
             }
             ViewData["Message"] = _message;
-            return View(article);
             */
+            return View(article);
+            
         }
     }
 }

@@ -6,7 +6,7 @@
             @foreach (var item in Model.Comments) {
                 <div id="commentMessage">                  
                     <span>
-                        <i style="padding-left:10px;">Enes Cemcir</i>
+                        <i style="padding-left:10px;">@item.AppUser.UserName</i>
                         <br/>
                         <strong style="padding-left:10px;">@item.Content</strong>
                     </span>

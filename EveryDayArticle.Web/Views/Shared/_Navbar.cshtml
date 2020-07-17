@@ -7,13 +7,15 @@
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
+            @if (User.Identity.IsAuthenticated == false) {
                 <li class="nav-item">
                     <a class="nav-link" href="/home">Anasayfa</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about">Hakkımda</a>
                 </li>
-             @if (User.Identity.IsAuthenticated) { 
+            }
+            @if (User.Identity.IsAuthenticated) {
                 <li class="nav-item">
                     <a class="nav-link" href="/article">Günün Makalesi</a>
                 </li>
@@ -45,12 +47,12 @@
                         <a class="nav-link" href="/roles">Roller</a>
                     </li>
                 }
-             }
+            }
         </ul>
         <ul class="navbar-nav ml-auto">
             @if (User.Identity.IsAuthenticated) {
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="/profile" class="nav-link">
                         @User.Identity.Name
                     </a>
                 </li>
@@ -59,7 +61,7 @@
                         <button style="text-decoration:none;" type="submit" class="btn btn-link nav-link">
                             Çıkış Yap
                         </button>
-                    </form>                  
+                    </form>
                 </li>
             }
             else {

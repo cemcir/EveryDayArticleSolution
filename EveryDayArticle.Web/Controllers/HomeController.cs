@@ -24,15 +24,10 @@ namespace EveryDayArticle.Web.Controllers
 
         public IActionResult Index()
         {
-            /*
-            var response=_categoryService.Add(new Category() {
-                Name = "Makine Mühendisliği"
-            });
-            if (response.Success) {
-                return View();
+            if (User.Identity.IsAuthenticated) {
+                return RedirectToAction("GetArticles","Article");
             }
-            */
-            return View();    
+            return View();              
         }
 
         [HttpGet]

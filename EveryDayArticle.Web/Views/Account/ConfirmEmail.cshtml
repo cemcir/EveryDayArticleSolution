@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "ConfirmEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+     EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["Message"];
+}
+<br/><br/>
+@if (ViewData["Message"] != null) {
+    <partial name="_Message" for="@message"/>
+}
+

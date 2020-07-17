@@ -42,5 +42,16 @@ namespace EveryDayArticle.Business.Concreate
                 return new BaseResponse<List<Comment>>(new MessageCode().ErrorCreated);
             }
         }
+
+        public BaseResponse<List<Comment>> GetCommentsByUserId(string userId,int Id)
+        {
+            try {
+                var comments = _unitOfWork.Comments.GetCommentsByUserId(userId,Id);
+                return new BaseResponse<List<Comment>>(comments);
+            }
+            catch (Exception) {
+                return new BaseResponse<List<Comment>>(new MessageCode().ErrorCreated);
+            }
+        }
     }
 }

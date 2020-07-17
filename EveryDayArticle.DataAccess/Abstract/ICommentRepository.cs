@@ -11,5 +11,7 @@ namespace EveryDayArticle.DataAccess.Abstract
         int GetCommentCountById(int Id);
 
         List<Comment> GetCommentsById(int Id);
+
+        List<Comment> GetCommentsByUserId(string userId,int Id);
     }
 }

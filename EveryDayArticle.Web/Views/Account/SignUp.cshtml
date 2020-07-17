@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "SignUp";
 }
+@{
+    EveryDayArticle.Business.Concreate.Message message = (EveryDayArticle.Business.Concreate.Message)ViewData["EmailErrorMessage"];
+}
 
 @section Scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
@@ -9,13 +12,16 @@
 }
 
 <br />
+<h1>Üye Ol Formu</h1>
+<hr />
+@if (message.Content!=null) {
+    <partial name="_Message" for="@message"/>
+}
 <div class="row">
     <div class="col-md-8">
         @Html.ValidationSummary()
-        <br />
-        <h1>Üye Ol Formu</h1>
-        <hr />
-        @using (Html.BeginForm("SignUp", "Account", FormMethod.Post)) {
+        @using (Html.BeginForm("SignUp", "Account", FormMethod.Post))
+        {
             <div class="form-group row">
                 <label class="col-md-2 col-form-label">Kullanıcı Adı</label>
                 <div class="col-md-10">
@@ -40,7 +46,7 @@
             <div class="form-group row">
                 <label class="col-md-2 col-form-label">Telefon No</label>
                 <div class="col-md-10">
-                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "0555 555 55 55" })
                     @Html.ValidationMessageFor(model => model.PhoneNumber)
                 </div>
             </div>

@@ -8,13 +8,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
+using EveryDayArticle.Business.Concreate;
+using EveryDayArticle.Business.Abstract;
 
 namespace EveryDayArticle.Web.Controllers
 {
     [Authorize(Roles ="admin")]
     public class AdminController : BaseController
     {
-        public AdminController(UserManager<AppUser> userManager,RoleManager<AppRole> roleManager):base(userManager,null,roleManager){ }
+        public AdminController(Message message, IArticleService articleService, ICategoryService categoryService, ICommentService commentService, ILikedService likedService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager  ) : base(message, articleService, categoryService, commentService, likedService, userManager, null,roleManager){ }
 
         public IActionResult RoleCreate()
         {

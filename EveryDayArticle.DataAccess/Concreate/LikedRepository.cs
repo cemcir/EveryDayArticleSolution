@@ -14,7 +14,7 @@ namespace EveryDayArticle.DataAccess.Concreate
         public LikedRepository(ArticleContext context) : base(context) { }
 
         public void AddLiked(Liked entity) {
-            Liked liked = _appDbContext.Likeds.Where(l => l.ArticleId == entity.ArticleId && l.UserId=="abcd").FirstOrDefault();
+            Liked liked = _appDbContext.Likeds.Where(l => l.ArticleId == entity.ArticleId && l.UserId==entity.UserId).FirstOrDefault();
             if (liked == null) {
                 _appDbContext.Likeds.Add(entity);
                 _appDbContext.SaveChanges();

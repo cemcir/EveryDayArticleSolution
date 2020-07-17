@@ -13,13 +13,15 @@ using EveryDayArticle.Business.Enums;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using EveryDayArticle.Business.Abstract;
 
 namespace EveryDayArticle.Web.Controllers
 {
     public class AccountController : BaseController
     {
-
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager):base(userManager,signInManager) { }
+        public AccountController(Message message, IArticleService articleService, ICategoryService categoryService, ICommentService commentService, ILikedService likedService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) :base(message, articleService, categoryService, commentService, likedService, userManager, signInManager) {
+            
+        }
 
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
@@ -40,6 +42,12 @@ namespace EveryDayArticle.Web.Controllers
                         ModelState.AddModelError("", "Saat başına yapılabilen maksimum istek sayısını aştınız");
                         return View(model);
                     }
+
+                    if (_userManager.IsEmailConfirmedAsync(user).Result==false) {
+                        ModelState.AddModelError("","Email adresiniz onaylanmamıştır Lütfen e-postanızı kontrol ediniz");
+                        return View(model);
+                    }
+
                     await _signInManager.SignOutAsync();
 
                     Microsoft.AspNetCore.Identity.SignInResult result =   await _signInManager.PasswordSignInAsync(user, model.Password,model.RememberMe,false);
@@ -80,6 +88,7 @@ namespace EveryDayArticle.Web.Controllers
         [HttpGet]
         public IActionResult SignUp()
         {
+            ViewData["EmailErrorMessage"] = _message;
             return View();
         }
 
@@ -87,25 +96,66 @@ namespace EveryDayArticle.Web.Controllers
         public async Task<IActionResult> SignUp(UserModel model)
         {
             if (ModelState.IsValid) {
+
+                var users = _userManager.Users.Where(u => u.PhoneNumber == model.PhoneNumber).FirstOrDefault();
+
+                if (users != null) {
+                   ModelState.AddModelError("", "Bu telefon numarası daha önceden kayıtlıdır");
+                    return View(model);
+                }
+
                 AppUser user = new AppUser();
                 user.UserName = model.UserName;
                 user.Email = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
+                /*
+                try {
+                    string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
+                    string link = Url.Action("ConfirmEmail", "Account", new {
+                        userId = user.Id,
+                        token = confirmationToken
+                    }, protocol: HttpContext.Request.Scheme);
+
+                    string url = $"<h2>Email adresinizi doğrulamak için lütfen aşağıdaki linke tıklayınız.</h2><hr/><a href='{link}'>email doğrulama linki</a>";
+
+                    Helper.EmailConfirmation.SendEmail(user.Email,"www.hergunbirmakale.com::Email doğrulama",url);
+
+                    IdentityResult result = await _userManager.CreateAsync(user,model.Password);
+                    if (result.Succeeded) {
+                        return RedirectToAction("Login","Account");
+                    }
+                    else {
+                        AddModelError(result);
+                    }   
+                }
+                catch (Exception) {
+                    _message.Content = "Bir Hata Meydana Geldi Lütfen Daha Sonra Tekrar Deneyiniz";
+                    _message.Css = "danger";
+                    ViewData["EmailErrorMessage"] = _message;
+                }
+                */
+                
                 IdentityResult result = await _userManager.CreateAsync(user,model.Password);
 
                 if (result.Succeeded) {
+
+                    string confirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    string link = Url.Action("ConfirmEmail", "Account", new {
+                        userId = user.Id,
+                        token=confirmationToken
+                    },protocol:HttpContext.Request.Scheme);
+
+                    string url = $"<h2>Email adresinizi doğrulamak için lütfen aşağıdaki linke tıklayınız.</h2><hr/><a href='{link}'>email doğrulama linki</a>";
+
+                    Helper.EmailConfirmation.SendEmail(user.Email, "www.hergunbirmakale.com::Email doğrulama", url);
 
                     return RedirectToAction("Login","Account");
                 }
                 else {
                     AddModelError(result); 
-                    /*
-                    foreach (IdentityError item in result.Errors) {
-                        ModelState.AddModelError("", item.Description);
-                    }
-                    */
-                }
+                }          
             }
             return View(model);
         }
@@ -209,7 +259,16 @@ namespace EveryDayArticle.Web.Controllers
             ViewBag.Gender = new SelectList(Enum.GetNames(typeof(Gender)));
 
             if (ModelState.IsValid) {
+
                 AppUser user = CurrentUser;
+                string phone = await _userManager.GetPhoneNumberAsync(user);
+
+                if (phone != model.PhoneNumber) {
+                    if (_userManager.Users.Any(u => u.PhoneNumber == model.PhoneNumber)) {
+                        ModelState.AddModelError("","Bu telefon numarası başka üye tarafından kullanılmaktadır");
+                        return View(model);
+                    }
+                }
 
                 if(userPicture!=null && userPicture.Length > 0) {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(userPicture.FileName);
@@ -310,6 +369,39 @@ namespace EveryDayArticle.Web.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId,string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null) {
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded) {
+                    _message.Content = "Email adresiniz onaylanmıştır Login ekranından giriş yapabilirsiniz";
+                    _message.Css = "success";
+                }
+                else {
+                    _message.Content = "Bir hata meydana geldi. lütfen daha sonra tekrar deneyiniz";
+                    _message.Css = "danger";
+                }
+            }
+            else {
+                _message.Content = "Kullanıcı bulunamadı";
+                _message.Css = "danger";
+            }
+            ViewData["Message"] = _message;
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Profile()
+        {
+            AppUser user = CurrentUser;
+            UserModel model = user.Adapt<UserModel>();
+
+            return View(model);
         }
     }
 }

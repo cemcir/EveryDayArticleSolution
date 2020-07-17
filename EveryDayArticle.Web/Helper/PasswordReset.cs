@@ -12,13 +12,13 @@ namespace EveryDayArticle.Web.Helper
             
             MailMessage myMessage = new MailMessage();
             SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential("gönderenin e-postası", "gönderenin şifresi");
+            client.Credentials = new System.Net.NetworkCredential("gönderenin e-posta adresi", "gönderenin e-posta şifresi");
             client.Port = 587;
             client.Host = "smtp.live.com";
             client.EnableSsl = true;
 
             myMessage.To.Add(email);
-            myMessage.From = new MailAddress("gönderenin e-postası");
+            myMessage.From = new MailAddress("gönderenin e-posta adresi");
             myMessage.Subject = subject;
             myMessage.IsBodyHtml = true;
             myMessage.Body = message;
@@ -27,8 +27,7 @@ namespace EveryDayArticle.Web.Helper
             }
             catch (Exception ex) {
                 throw ex;
-            }
-            
+            }           
         }
     }
 }
